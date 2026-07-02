@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 10px;
+}
+
+.ts-reveal {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.msg-row {
+  &:hover {
+    .ts-reveal {
+      opacity: 1;
+    }
+  }
+}
+
+@utility app-shell {
+  @apply flex h-screen w-full overflow-hidden bg-white text-neutral-900;
+}
+
+@utility sidebar {
+  @apply w-72 shrink-0 flex-col border-r border-neutral-200 bg-neutral-50;
+}
+
+@utility sidebar-item {
+  @apply mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 transition-colors hover:bg-neutral-100;
+}
+
+@utility sidebar-item-active {
+  @apply bg-neutral-100;
+}
+
+@utility avatar {
+  @apply h-10 w-10 shrink-0 rounded-full bg-neutral-200;
+}
+
+@utility avatar-sm {
+  @apply h-7 w-7 shrink-0 rounded-full bg-neutral-200;
+}
+
+@utility chat-header {
+  @apply flex h-16 shrink-0 items-center gap-3 border-b border-neutral-200 px-6;
+}
+
+@utility bubble {
+  @apply max-w-[75%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed;
+}
+
+@utility bubble-user {
+  @apply bg-neutral-900 text-white;
+}
+
+@utility bubble-assistant {
+  @apply bg-neutral-100 text-neutral-900;
+}
+
+@utility composer-box {
+  @apply flex items-end gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 transition-colors focus-within:border-neutral-400;
+}
+
+@utility suggestion-chip {
+  @apply rounded-lg border border-neutral-200 px-4 py-2.5 text-left text-sm transition-colors hover:bg-neutral-50;
+}
+
+@utility reference-card {
+  @apply mt-2 flex w-full max-w-[280px] items-center gap-3 rounded-xl border border-neutral-200 px-3 py-2.5 transition-colors hover:bg-neutral-50;
+}
