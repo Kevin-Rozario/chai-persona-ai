@@ -2,6 +2,7 @@
   "name": "chai-persona-ai-client",
   "private": true,
   "version": "1.0.0",
+  "author": "Kevin Rozario",
   "type": "module",
   "scripts": {
     "dev": "vite",

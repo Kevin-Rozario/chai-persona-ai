@@ -1,20 +1,22 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Provider, ConnectionStatus } from "../types/chat";
 
-const STORAGE_KEY = "persona-ai-credentials";
+const STORAGE_KEY = "chai-persona-ai-credentials";
 
 interface StoredCredentials {
   provider: Provider;
   apiKey: string;
 }
 
-// Mock validator — replace with a fetch to POST /api/validate-key once
-// the server route exists. Server makes one lightweight call to the
-// provider using this key and returns { valid: boolean }.
-async function mockValidateKey(provider: Provider, apiKey: string): Promise<boolean> {
-  await new Promise((r) => setTimeout(r, 900));
-  const prefixOk = provider === "claude" ? apiKey.startsWith("sk-ant-") : apiKey.startsWith("sk-");
-  return prefixOk && apiKey.length > 20;
+async function validateKeyRequest(provider: Provider, apiKey: string): Promise<boolean> {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/validate-key`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ provider, apiKey }),
+  });
+  return response.json().then((data) => data.valid);
 }
 
 export function useApiKey() {
@@ -36,7 +38,7 @@ export function useApiKey() {
     if (!trimmed) return;
     setStatus("validating");
 
-    const isValid = await mockValidateKey(nextProvider, trimmed);
+    const isValid = await validateKeyRequest(nextProvider, trimmed);
 
     if (isValid) {
       setProvider(nextProvider);
