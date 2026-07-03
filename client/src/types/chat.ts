@@ -31,11 +31,13 @@ export interface Persona {
   suggestions: string[];
 }
 
+export type ChatMessage = Pick<Message, "role" | "text">;
+
 export interface ChatRequest {
   personaId: PersonaId;
   provider: Provider;
   apiKey: string;
-  messages: Pick<Message, "role" | "text">[];
+  messages: ChatMessage[];
   summary?: string;
 }
 
