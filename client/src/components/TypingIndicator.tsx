@@ -1,6 +1,6 @@
 import type { Persona } from "@/types/chat";
 
-export default function TypingIndicator({ persona }: { persona: Persona }) {
+function TypingIndicator({ persona }: { persona: Persona }) {
   return (
     <div className="mt-3 flex gap-2.5">
       <img src={persona.avatarUrl} alt="" className="avatar-sm" />
@@ -8,7 +8,7 @@ export default function TypingIndicator({ persona }: { persona: Persona }) {
         {[0, 1, 2].map((d) => (
           <span
             key={d}
-            className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400"
+            className="bg-muted h-1.5 w-1.5 animate-bounce rounded-full"
             style={{ animationDelay: `${d * 0.15}s` }}
           />
         ))}
@@ -16,3 +16,5 @@ export default function TypingIndicator({ persona }: { persona: Persona }) {
     </div>
   );
 }
+
+export default TypingIndicator;

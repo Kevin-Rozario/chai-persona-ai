@@ -6,18 +6,25 @@ interface PersonaCardProps {
   onSelect: (id: PersonaId) => void;
 }
 
-export default function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
+function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
   return (
     <button
       onClick={() => onSelect(persona.id)}
       className={`sidebar-item ${active ? "sidebar-item-active" : ""}`}
-      style={{ borderLeft: `4px solid ${active ? persona.accent : "transparent"}` }}
+      style={{ borderLeft: `3px solid ${active ? `var(--accent)` : "transparent"}` }}
     >
-      <img src={persona.avatarUrl} alt={persona.name} className="avatar" />
+      <img
+        src={persona.avatarUrl}
+        alt={persona.name}
+        className="avatar"
+        style={active ? { boxShadow: `0 0 0 2px ${`var(--accent)`}55` } : undefined}
+      />
       <div className="min-w-0 text-left">
         <div className="truncate text-sm font-medium">{persona.name}</div>
-        <div className="truncate text-xs text-neutral-400">{persona.handle}</div>
+        <div className="text-muted truncate text-xs">{persona.handle}</div>
       </div>
     </button>
   );
 }
+
+export default PersonaCard;

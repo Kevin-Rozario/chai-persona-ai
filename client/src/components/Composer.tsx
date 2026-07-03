@@ -1,22 +1,39 @@
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, KeyRound } from "lucide-react";
 import type { Persona } from "@/types/chat";
 
 interface ComposerProps {
   persona: Persona;
   onSend: (text: string) => void;
   disabled: boolean;
+  connected: boolean;
+  onBlockedClick: () => void;
 }
 
-export default function Composer({ persona, onSend, disabled }: ComposerProps) {
+function Composer({ persona, onSend, disabled, connected, onBlockedClick }: ComposerProps) {
   const [value, setValue] = useState("");
 
   const handleSend = () => {
+    if (!connected) return onBlockedClick();
     const trimmed = value.trim();
     if (!trimmed || disabled) return;
     onSend(trimmed);
     setValue("");
   };
+
+  if (!connected) {
+    return (
+      <div className="px-6 pt-3 pb-5">
+        <button
+          onClick={onBlockedClick}
+          className="composer-box text-muted hover:text-ink mx-auto w-full max-w-2xl justify-center"
+        >
+          <KeyRound size={14} />
+          <span className="text-sm">Connect an API key to start chatting</span>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="px-6 pt-3 pb-5">
@@ -46,3 +63,5 @@ export default function Composer({ persona, onSend, disabled }: ComposerProps) {
     </div>
   );
 }
+
+export default Composer;

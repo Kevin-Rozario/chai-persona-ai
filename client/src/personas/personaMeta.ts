@@ -7,7 +7,6 @@ export const PERSONAS: Record<"hitesh" | "piyush", Persona> = {
     handle: "Chai aur Code",
     avatarUrl:
       "https://api.dicebear.com/9.x/notionists/svg?seed=hitesh-choudhary&backgroundColor=fde9d9",
-    accent: "#C2703D",
     greeting: "Haan ji! Batao aaj kya seekhna hai — code, career, ya bas chai pe charcha?",
     sub: "Full stack mentor · Hinglish teaching style",
     suggestions: [
@@ -22,7 +21,6 @@ export const PERSONAS: Record<"hitesh" | "piyush", Persona> = {
     handle: "Building in public",
     avatarUrl:
       "https://api.dicebear.com/9.x/notionists/svg?seed=piyush-garg&backgroundColor=dbe4fe",
-    accent: "#4F55C4",
     greeting: "Hey, Piyush here. What are you building — and will it actually scale?",
     sub: "Software engineer · System design focus",
     suggestions: [

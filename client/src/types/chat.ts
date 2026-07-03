@@ -1,5 +1,7 @@
 export type PersonaId = "hitesh" | "piyush";
 export type MessageRole = "user" | "assistant";
+export type Provider = "claude" | "openai";
+export type ConnectionStatus = "idle" | "validating" | "connected" | "invalid" | "error";
 
 export interface ReferenceItem {
   title: string;
@@ -24,7 +26,6 @@ export interface Persona {
   name: string;
   handle: string;
   avatarUrl: string;
-  accent: string;
   greeting: string;
   sub: string;
   suggestions: string[];
@@ -32,6 +33,8 @@ export interface Persona {
 
 export interface ChatRequest {
   personaId: PersonaId;
+  provider: Provider;
+  apiKey: string;
   messages: Pick<Message, "role" | "text">[];
   summary?: string;
 }
