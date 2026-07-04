@@ -15,7 +15,7 @@ function formatReferencesBlock(references: ReferenceItem[]): string {
     (ref) => `- "${ref.title}" (${ref.platform}, ${ref.free ? "free" : "paid"})`
   );
 
-  return `\n\nRelevant content for this turn — mention naturally if it fits, otherwise ignore:\n${lines.join("\n")}`;
+  return `\n\nRelevant content for this turn - mention naturally if it fits, otherwise ignore:\n${lines.join("\n")}`;
 }
 
 router.post(
@@ -48,7 +48,11 @@ router.post(
       updatedSummary = await summarizeConversation(provider, apiKey, summary, pending);
     }
 
-    const response: ChatResponse & {references?: ReferenceItem[] } = { reply, ...(updatedSummary && { summary: updatedSummary }), ...(matched.length > 0 && { references: matched }) };
+    const response: ChatResponse & { references?: ReferenceItem[] } = {
+      reply,
+      ...(updatedSummary && { summary: updatedSummary }),
+      ...(matched.length > 0 && { references: matched }),
+    };
 
     res.status(200).json(new ApiResponse(200, "Chat completion completed successfully", response));
   })
