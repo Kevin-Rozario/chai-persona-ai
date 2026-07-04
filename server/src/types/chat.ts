@@ -20,6 +20,12 @@ export interface ChatRequest {
   provider: Provider;
   apiKey: string;
   messages: ChatMessage[];
+  pending?: ChatMessage[];
+  summary?: string;
+}
+
+export interface ChatResponse {
+  reply: string;
   summary?: string;
 }
 

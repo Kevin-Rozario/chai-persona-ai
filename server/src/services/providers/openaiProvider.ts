@@ -1,17 +1,17 @@
 import OpenAI, { OpenAIError } from "openai";
 import type { ChatMessage } from "@/types/chat.js";
 
-const VALIDATION_MODEL = "gpt-4o-mini";
-const CHAT_MODEL = "gpt-4o-mini";
+const CHAT_MODEL = "gpt-4o";
 
 export async function validateOpenAIKey(apiKey: string): Promise<boolean> {
+  if (!apiKey || !apiKey.startsWith("sk-")) {
+    console.error("Invalid OpenAI API Key");
+    return false;
+  }
+
   try {
     const client = new OpenAI({ apiKey });
-    await client.chat.completions.create({
-      model: VALIDATION_MODEL,
-      max_tokens: 1,
-      messages: [{ role: "user", content: "hi" }],
-    });
+    await client.models.list();
     return true;
   } catch (error) {
     if (error instanceof OpenAIError) {

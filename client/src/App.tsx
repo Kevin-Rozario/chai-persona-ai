@@ -7,9 +7,9 @@ import { useTheme } from "@/hooks/useTheme";
 import { useApiKey } from "@/hooks/useApiKey";
 
 export default function App() {
-  const { persona, activeId, setActiveId, messages, isTyping, sendMessage } = useChat();
+  const { provider, apiKey, status, connect, disconnect } = useApiKey();
+  const { persona, activeId, setActiveId, messages, isTyping, sendMessage } = useChat({provider, apiKey});
   const { theme, toggle: toggleTheme } = useTheme();
-  const { provider, status, connect, disconnect } = useApiKey();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false);
 

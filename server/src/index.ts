@@ -3,6 +3,7 @@ import cors from "cors";
 import { env } from "@/config/env.js";
 import chatRoute from "@/routes/chat.route.js";
 import validateKeyRoute from "@/routes/validateKey.route.js";
+import { globalErrorHandler } from "@/middlewares/error.middleware.js";
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.get("/health", (_req, res) => {
 app.use("/api", chatRoute);
 app.use("/api", validateKeyRoute);
 
-app.listen(env.port, () => {
-  console.log(`Server running on http://localhost:${env.port}`);
+app.use(globalErrorHandler);
+
+app.listen(env.PORT, () => {
+  console.log(`Server running on http://localhost:${env.PORT}`);
 });

@@ -1,22 +1,21 @@
 import Anthropic, { AnthropicError } from "@anthropic-ai/sdk";
 import type { ChatMessage } from "@/types/chat.js";
 
-const VALIDATION_MODEL = "";
-const CHAT_MODEL = "";
+const CHAT_MODEL = "claude-sonnet-5";
 
 export async function validateAnthropicKey(apiKey: string): Promise<boolean> {
+  if (!apiKey || !apiKey.startsWith("sk-ant-")) {
+    console.error("Invalid Anthropic API Key");
+    return false;
+  }
+
   try {
     const client = new Anthropic({ apiKey });
-    await client.messages.create({
-      model: VALIDATION_MODEL,
-      max_tokens: 1,
-      messages: [{ role: "user", content: "hi" }],
-    });
-
+    await client.models.list();
     return true;
   } catch (error) {
     if (error instanceof AnthropicError) {
-      console.error("Anthropic API Error:", error.message);
+      console.error(`Anthropic API Error:`, error.message);
     } else {
       console.error("Unexpected Error:", error);
     }
@@ -31,13 +30,28 @@ export async function createClaudeCompletion(
 ): Promise<string> {
   const client = new Anthropic({ apiKey });
 
-  const response = await client.messages.create({
-    model: CHAT_MODEL,
-    max_tokens: 1024,
-    system: systemPrompt,
-    messages: messages.map((m) => ({ role: m.role, content: m.text })),
-  });
+  try {
+    const response = await client.messages.create({
+      model: CHAT_MODEL,
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: messages.map((m) => ({ role: m.role as "user" | "assistant", content: m.text })),
+    });
 
-  const textBlock = response.content.find((block) => block.type === "text");
-  return textBlock?.type === "text" ? textBlock.text : "";
+    if (response.content && response.content.length > 0) {
+      const textBlock = response.content.find((block) => block.type === "text");
+      if (textBlock && "text" in textBlock) {
+        return textBlock.text;
+      }
+    }
+
+    return "";
+  } catch (error) {
+    if (error instanceof AnthropicError) {
+      console.error(`Anthropic API Error:`, error.message);
+    } else {
+      console.error("Unexpected Error:", error);
+    }
+    return "";
+  }
 }

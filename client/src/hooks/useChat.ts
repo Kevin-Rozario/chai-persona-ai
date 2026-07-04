@@ -1,31 +1,32 @@
 import { useState, useCallback, useRef } from "react";
-import type { PersonaId, Message } from "@/types/chat";
+import type { PersonaId, Message, Provider } from "@/types/chat";
 import { PERSONAS } from "@/personas/personaMeta";
-
-// Temporary mock reply generator — will be replaced by useSSEStream's
-// real backend call. Kept isolated so that swap is a one-function change.
-const MOCK_REPLIES: Record<PersonaId, string[]> = {
-  hitesh: [
-    "Dekho bhai, ye acha sawaal hai. Pehle basics pakka karo, speed apne aap aa jayegi.",
-    "Haan ji, bilkul sahi soch rahe ho. Ek chhota project banao isi concept pe.",
-    "Toh bhai, teen cheezein hain yahan samajhne wali — concept, code, consistency.",
-  ],
-  piyush: [
-    "Okay so here's the thing — start simple, split things out once you feel real pain.",
-    "Good question. Think in three layers: API contract, data layer, failure handling.",
-    "Honestly? Ship the ugly version first. You'll learn more than any course teaches.",
-  ],
-};
+import { getWindowedMessages, getPendingSummaryMessages, shouldSummarize } from "@/utils/contextWindow";
 
 function createEmptyThreads(): Record<PersonaId, Message[]> {
   return { hitesh: [], piyush: [] };
 }
 
-export function useChat() {
+function createEmptySummaries(): Record<PersonaId, string | undefined> {
+  return { hitesh: undefined, piyush: undefined };
+}
+
+function createEmptyIndex(): Record<PersonaId, number> {
+  return { hitesh: 0, piyush: 0 };
+}
+
+interface UseChatOptions {
+  provider: Provider;
+  apiKey: string;
+}
+
+export function useChat({ provider, apiKey }: UseChatOptions) {
   const [activeId, setActiveId] = useState<PersonaId>("hitesh");
   const [threads, setThreads] = useState<Record<PersonaId, Message[]>>(createEmptyThreads());
   const [isTyping, setIsTyping] = useState(false);
-  const replyIndexRef = useRef<Record<PersonaId, number>>({ hitesh: 0, piyush: 0 });
+
+  const summariesRef = useRef<Record<PersonaId, string | undefined>>(createEmptySummaries());
+  const summarizedUpToRef = useRef<Record<PersonaId, number>>(createEmptyIndex());
 
   const persona = PERSONAS[activeId];
   const messages = threads[activeId];
@@ -35,41 +36,73 @@ export function useChat() {
   }, []);
 
   const sendMessage = useCallback(
-    (text: string) => {
+    async (text: string) => {
       const trimmed = text.trim();
-      if (!trimmed || isTyping) return;
+      if (!trimmed || isTyping || !apiKey) return;
+
+      const targetId = activeId;
 
       const userMessage: Message = {
         id: crypto.randomUUID(),
         role: "user",
         text: trimmed,
         timestamp: Date.now(),
-        personaId: activeId,
+        personaId: targetId,
       };
-      appendMessage(activeId, userMessage);
+      appendMessage(targetId, userMessage);
       setIsTyping(true);
 
-      // Mock response block — replace this with a call into
-      // useSSEStream(activeId, windowedMessages) once the backend exists.
-      const targetId = activeId; // capture in case user switches personas mid-typing
-      const delay = 800 + Math.random() * 600;
-      setTimeout(() => {
-        const pool = MOCK_REPLIES[targetId];
-        const idx = replyIndexRef.current[targetId] % pool.length;
-        replyIndexRef.current[targetId] += 1;
+      const updatedThread = [...threads[targetId], userMessage];
+      const windowed = getWindowedMessages(updatedThread);
+      const summarizedUpTo = summarizedUpToRef.current[targetId];
+      const pendingRaw = getPendingSummaryMessages(updatedThread, summarizedUpTo);
+      const pending = pendingRaw.map((m) => ({ role: m.role, text: m.text }));
+      const summary = summariesRef.current[targetId];
+
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            personaId: targetId,
+            provider,
+            apiKey,
+            messages: windowed,
+            ...(shouldSummarize(pendingRaw) && { pending }),
+            ...(summary && { summary }),
+          }),
+        });
+
+        if (!res.ok) throw new Error("Request failed");
+        const data = await res.json();
+
+        if (data.summary) {
+          summariesRef.current[targetId] = data.summary;
+          summarizedUpToRef.current[targetId] = updatedThread.length - windowed.length;
+        }
 
         const assistantMessage: Message = {
           id: crypto.randomUUID(),
           role: "assistant",
-          text: pool[idx],
+          text: data.reply,
           timestamp: Date.now(),
           personaId: targetId,
         };
         appendMessage(targetId, assistantMessage);
+      } catch {
+        const fallback: Message = {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          text: "Something went wrong reaching the model. Please try again.",
+          timestamp: Date.now(),
+          personaId: targetId,
+        };
+        appendMessage(targetId, fallback);
+      } finally {
         setIsTyping(false);
-      }, delay);
+      }
     },
-    [activeId, isTyping, appendMessage],
+    [activeId, isTyping, apiKey, provider, threads, appendMessage]
   );
 
   return {
