@@ -11,12 +11,17 @@ interface StoredCredentials {
 async function validateKeyRequest(provider: Provider, apiKey: string): Promise<boolean> {
   const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/validate-key`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ provider, apiKey }),
   });
-  return response.json().then((data) => data.valid);
+
+  const payload = await response.json();
+
+  if (!response.ok || !payload.success) {
+    return false;
+  }
+
+  return payload.data.valid;
 }
 
 export function useApiKey() {
@@ -38,18 +43,22 @@ export function useApiKey() {
     if (!trimmed) return;
     setStatus("validating");
 
-    const isValid = await validateKeyRequest(nextProvider, trimmed);
+    try {
+      const isValid = await validateKeyRequest(nextProvider, trimmed);
 
-    if (isValid) {
-      setProvider(nextProvider);
-      setApiKey(trimmed);
-      setStatus("connected");
-      sessionStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ provider: nextProvider, apiKey: trimmed }),
-      );
-    } else {
-      setStatus("invalid");
+      if (isValid) {
+        setProvider(nextProvider);
+        setApiKey(trimmed);
+        setStatus("connected");
+        sessionStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ provider: nextProvider, apiKey: trimmed }),
+        );
+      } else {
+        setStatus("invalid");
+      }
+    } catch {
+      setStatus("error");
     }
   }, []);
 

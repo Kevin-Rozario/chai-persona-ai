@@ -14,8 +14,8 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
-app.use("/api", chatRoute);
-app.use("/api", validateKeyRoute);
+app.use("/api/v1", chatRoute);
+app.use("/api/v1", validateKeyRoute);
 
 app.use(globalErrorHandler);
 

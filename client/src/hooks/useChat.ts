@@ -35,16 +35,13 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
   const persona = PERSONAS[activeId];
   const messages = threads[activeId];
 
-  const appendMessage = useCallback((id: PersonaId, message: Message) => {
-    setThreads((prev) => ({ ...prev, [id]: [...prev[id], message] }));
-  }, []);
-
   const sendMessage = useCallback(
     async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed || isTyping || !apiKey) return;
 
       const targetId = activeId;
+      setIsTyping(true);
 
       const userMessage: Message = {
         id: crypto.randomUUID(),
@@ -53,18 +50,21 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
         timestamp: Date.now(),
         personaId: targetId,
       };
-      appendMessage(targetId, userMessage);
-      setIsTyping(true);
 
-      const updatedThread = [...threads[targetId], userMessage];
-      const windowed = getWindowedMessages(updatedThread);
+      let currentActiveThread: Message[] = [];
+      setThreads((prev) => {
+        currentActiveThread = [...prev[targetId], userMessage];
+        return { ...prev, [targetId]: currentActiveThread };
+      });
+
+      const windowed = getWindowedMessages(currentActiveThread);
       const summarizedUpTo = summarizedUpToRef.current[targetId];
-      const pendingRaw = getPendingSummaryMessages(updatedThread, summarizedUpTo);
+      const pendingRaw = getPendingSummaryMessages(currentActiveThread, summarizedUpTo);
       const pending = pendingRaw.map((m) => ({ role: m.role, text: m.text }));
       const summary = summariesRef.current[targetId];
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -77,36 +77,45 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
           }),
         });
 
-        if (!res.ok) throw new Error("Request failed");
-        const data = await res.json();
+        const payload = await res.json();
 
-        if (data.summary) {
-          summariesRef.current[targetId] = data.summary;
-          summarizedUpToRef.current[targetId] = updatedThread.length - windowed.length;
+        if (!res.ok || !payload.success) {
+          throw new Error(payload?.error?.message || "Failed to reach server.");
+        }
+
+        const apiData = payload.data;
+
+        if (apiData.summary) {
+          summariesRef.current[targetId] = apiData.summary;
+          summarizedUpToRef.current[targetId] = currentActiveThread.length - windowed.length;
         }
 
         const assistantMessage: Message = {
           id: crypto.randomUUID(),
           role: "assistant",
-          text: data.reply,
+          text: apiData.reply,
           timestamp: Date.now(),
           personaId: targetId,
+          ...(apiData.references?.length > 0 && { references: apiData.references }),
         };
-        appendMessage(targetId, assistantMessage);
-      } catch {
+
+        setThreads((prev) => ({ ...prev, [targetId]: [...prev[targetId], assistantMessage] }));
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Something went wrong. Please try again.";
         const fallback: Message = {
           id: crypto.randomUUID(),
           role: "assistant",
-          text: "Something went wrong reaching the model. Please try again.",
+          text: message,
           timestamp: Date.now(),
           personaId: targetId,
         };
-        appendMessage(targetId, fallback);
+        setThreads((prev) => ({ ...prev, [targetId]: [...prev[targetId], fallback] }));
       } finally {
         setIsTyping(false);
       }
     },
-    [activeId, isTyping, apiKey, provider, threads, appendMessage],
+    [activeId, isTyping, apiKey, provider],
   );
 
   return {

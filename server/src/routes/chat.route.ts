@@ -15,7 +15,7 @@ function formatReferencesBlock(references: ReferenceItem[]): string {
     (ref) => `- "${ref.title}" (${ref.platform}, ${ref.free ? "free" : "paid"})`
   );
 
-  return `\n\nRelevant content for this turn - mention naturally if it fits, otherwise ignore:\n${lines.join("\n")}`;
+  return `\n\nRelevant content for this turn — mention naturally if it fits, otherwise ignore:\n${lines.join("\n")}`;
 }
 
 router.post(
