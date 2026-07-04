@@ -33,9 +33,11 @@ function MessageBubble({ message, persona }: MessageBubbleProps) {
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
         </div>
 
-        {message.references?.map((ref) => (
-          <ReferenceCard key={ref.url} reference={ref} persona={persona} />
-        ))}
+        <div className="flex w-full flex-wrap items-center justify-evenly">
+          {message.references?.map((ref) => (
+            <ReferenceCard key={ref.url} reference={ref} persona={persona} />
+          ))}
+        </div>
 
         <span className="ts-reveal text-muted mt-1 px-1 text-[10px]">
           {formatTime(message.timestamp)}

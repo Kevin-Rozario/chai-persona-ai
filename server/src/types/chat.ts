@@ -4,8 +4,8 @@ export type MessageRole = "user" | "assistant";
 
 export interface ReferenceItem {
   title: string;
-  platform: "youtube" | "cohort" | "udemy" | "website" | "social" | "github";
-  type: "series" | "playlist" | "course" | "post" | "handle" | "video" | "repo";
+  platform: "youtube" | "udemy" | "website" | "social";
+  type: "series" | "playlist" | "course" | "post" | "handle" | "video" | "cohort";
   url: string;
   topics: string[];
   free: boolean;

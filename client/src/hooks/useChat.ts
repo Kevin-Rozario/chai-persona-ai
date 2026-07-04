@@ -51,11 +51,8 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
         personaId: targetId,
       };
 
-      let currentActiveThread: Message[] = [];
-      setThreads((prev) => {
-        currentActiveThread = [...prev[targetId], userMessage];
-        return { ...prev, [targetId]: currentActiveThread };
-      });
+      const currentActiveThread = [...threads[targetId], userMessage];
+      setThreads((prev) => ({ ...prev, [targetId]: currentActiveThread }));
 
       const windowed = getWindowedMessages(currentActiveThread);
       const summarizedUpTo = summarizedUpToRef.current[targetId];
@@ -115,7 +112,7 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
         setIsTyping(false);
       }
     },
-    [activeId, isTyping, apiKey, provider],
+    [activeId, isTyping, apiKey, provider, threads],
   );
 
   return {
