@@ -7,6 +7,7 @@ export interface ReferenceItem {
   platform: "youtube" | "cohort" | "udemy" | "website" | "social" | "github";
   type: "series" | "playlist" | "course" | "post" | "handle" | "video" | "repo";
   url: string;
+  topics: string[];
   free: boolean;
 }
 

@@ -1,0 +1,53 @@
+import type { ReferenceItem } from "@/types/chat.js";
+
+export const STOPWORDS = new Set<string>([
+  // Articles & Determiners
+  "a", "an", "the", "this", "that", "these", "those", "each", "every", "all", "any", "both", "some", "such",
+
+  // Coordinating & Subordinating Conjunctions
+  "and", "but", "or", "nor", "for", "yet", "so", "although", "because", "since", "unless", "until", "while", "whereas",
+
+  // Prepositions
+  "about", "above", "across", "after", "against", "along", "amid", "among", "around", "at", "before", "behind", "below",
+  "beneath", "beside", "between", "beyond", "by", "concerning", "despite", "down", "during", "except", "following",
+  "from", "in", "inside", "into", "like", "near", "of", "off", "on", "onto", "out", "outside", "over", "past", "regarding",
+  "since", "through", "throughout", "till", "to", "toward", "towards", "under", "underneath", "until", "up", "upon", "with",
+  "within", "without",
+
+  // Pronouns (Subject, Object, Possessive, Reflexive)
+  "i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves",
+  "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs",
+  "themselves", "who", "whom", "whose", "which", "what", "whatever", "whoever", "whichever", "someone", "somebody", "something",
+  "anyone", "anybody", "anything", "everyone", "everybody", "everything", "noone", "nobody", "nothing",
+
+  // Common Verbs & Auxiliaries (Including contractions without punctuation)
+  "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing",
+  "will", "would", "shall", "should", "can", "could", "may", "might", "must", "get", "got", "go", "goes", "went", "gone",
+  "make", "makes", "made", "take", "takes", "took", "taken", "come", "came", "see", "saw", "seen",
+
+  // Adverbs, Question Words & Common Interrogatives
+  "how", "why", "where", "when", "wherever", "whenever", "here", "there", "then", "now", "not", "no", "yes", "just",
+  "quite", "rather", "very", "too", "almost", "always", "never", "often", "seldom", "sometimes", "usually", "again",
+  "further", "thence", "thereby", "therefore", "thus"
+]);
+
+function extractKeywords(text: string): string[] {
+  return text.toLowerCase().replace(/[^\w\s]/g, "").split(/\s+/).filter(word => word.length > 2 &&!STOPWORDS.has(word));
+}
+
+export function matchContent(userMessage: string, catalog: ReferenceItem[]): ReferenceItem[] {
+  const keywords = extractKeywords(userMessage);
+  if (keywords.length === 0) return [];
+
+  const scored = catalog.map((item) => {
+    const searchable = [...item.topics, ...extractKeywords(item.title)];
+    const score = keywords.filter((kw) => searchable.some((tag) => tag.includes(kw) || kw.includes(tag))).length;
+    return { item, score };
+  });
+
+  return scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2)
+    .map((s) => s.item);
+}
