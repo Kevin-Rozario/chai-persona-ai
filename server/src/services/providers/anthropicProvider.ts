@@ -17,7 +17,8 @@ export async function validateAnthropicKey(apiKey: string): Promise<boolean> {
     if (error instanceof Anthropic.APIError) {
       throw new ApiError(error.status, error.message);
     }
-    throw new ApiError(500, "An unexpected error occurred during Anthropic API key validation")
+
+    throw new ApiError(500, "An unexpected error occurred during Anthropic API key validation");
   }
 }
 
@@ -49,6 +50,6 @@ export async function createClaudeCompletion(
       throw new ApiError(error.status, error.message);
     }
 
-    throw new ApiError(500, "An unexpected error occurred during Anthropic API request")
+    throw new ApiError(500, "An unexpected error occurred during Anthropic API request");
   }
 }

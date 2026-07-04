@@ -1,7 +1,11 @@
 import { useState, useCallback, useRef } from "react";
 import type { PersonaId, Message, Provider } from "@/types/chat";
 import { PERSONAS } from "@/personas/personaMeta";
-import { getWindowedMessages, getPendingSummaryMessages, shouldSummarize } from "@/utils/contextWindow";
+import {
+  getWindowedMessages,
+  getPendingSummaryMessages,
+  shouldSummarize,
+} from "@/utils/contextWindow";
 
 function createEmptyThreads(): Record<PersonaId, Message[]> {
   return { hitesh: [], piyush: [] };
@@ -102,7 +106,7 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
         setIsTyping(false);
       }
     },
-    [activeId, isTyping, apiKey, provider, threads, appendMessage]
+    [activeId, isTyping, apiKey, provider, threads, appendMessage],
   );
 
   return {

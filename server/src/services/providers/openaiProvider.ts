@@ -18,7 +18,7 @@ export async function validateOpenAIKey(apiKey: string): Promise<boolean> {
       throw new ApiError(error.status, error.message);
     }
 
-    throw new ApiError(500, "An unexpected error occurred during OpenAI API key validation")
+    throw new ApiError(500, "An unexpected error occurred during OpenAI API key validation");
   }
 }
 
