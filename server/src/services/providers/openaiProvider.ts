@@ -1,12 +1,12 @@
-import OpenAI, { OpenAIError } from "openai";
+import OpenAI from "openai";
 import type { ChatMessage } from "@/types/chat.js";
+import ApiError from "@/utils/apiError.util.js";
 
 const CHAT_MODEL = "gpt-4o";
 
 export async function validateOpenAIKey(apiKey: string): Promise<boolean> {
   if (!apiKey || !apiKey.startsWith("sk-")) {
-    console.error("Invalid OpenAI API Key");
-    return false;
+    throw new ApiError(400, "Invalid OpenAI API Key");
   }
 
   try {
@@ -14,12 +14,11 @@ export async function validateOpenAIKey(apiKey: string): Promise<boolean> {
     await client.models.list();
     return true;
   } catch (error) {
-    if (error instanceof OpenAIError) {
-      console.error("OpenAI API Error:", error.message);
-    } else {
-      console.error("Unexpected Error:", error);
+    if (error instanceof OpenAI.APIError) {
+      throw new ApiError(error.status, error.message);
     }
-    return false;
+
+    throw new ApiError(500, "An unexpected error occurred during OpenAI API key validation")
   }
 }
 
@@ -30,14 +29,22 @@ export async function createOpenAICompletion(
 ): Promise<string> {
   const client = new OpenAI({ apiKey });
 
-  const response = await client.chat.completions.create({
-    model: CHAT_MODEL,
-    max_tokens: 1024,
-    messages: [
-      { role: "system", content: systemPrompt },
-      ...messages.map((m) => ({ role: m.role, content: m.text }) as const),
-    ],
-  });
+  try {
+    const response = await client.chat.completions.create({
+      model: CHAT_MODEL,
+      max_tokens: 1024,
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...messages.map((m) => ({ role: m.role, content: m.text }) as const),
+      ],
+    });
 
-  return response.choices[0]?.message?.content ?? "";
+    return response.choices[0]?.message?.content ?? "";
+  } catch (error) {
+    if (error instanceof OpenAI.APIError) {
+      throw new ApiError(error.status, error.message);
+    }
+
+    throw new ApiError(500, "An unexpected error occurred during OpenAI API request");
+  }
 }

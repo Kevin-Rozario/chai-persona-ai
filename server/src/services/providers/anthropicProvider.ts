@@ -1,12 +1,12 @@
-import Anthropic, { AnthropicError } from "@anthropic-ai/sdk";
+import Anthropic from "@anthropic-ai/sdk";
 import type { ChatMessage } from "@/types/chat.js";
+import ApiError from "@/utils/apiError.util.js";
 
 const CHAT_MODEL = "claude-sonnet-5";
 
 export async function validateAnthropicKey(apiKey: string): Promise<boolean> {
   if (!apiKey || !apiKey.startsWith("sk-ant-")) {
-    console.error("Invalid Anthropic API Key");
-    return false;
+    throw new ApiError(400, "Invalid Anthropic API Key");
   }
 
   try {
@@ -14,12 +14,10 @@ export async function validateAnthropicKey(apiKey: string): Promise<boolean> {
     await client.models.list();
     return true;
   } catch (error) {
-    if (error instanceof AnthropicError) {
-      console.error(`Anthropic API Error:`, error.message);
-    } else {
-      console.error("Unexpected Error:", error);
+    if (error instanceof Anthropic.APIError) {
+      throw new ApiError(error.status, error.message);
     }
-    return false;
+    throw new ApiError(500, "An unexpected error occurred during Anthropic API key validation")
   }
 }
 
@@ -47,11 +45,10 @@ export async function createClaudeCompletion(
 
     return "";
   } catch (error) {
-    if (error instanceof AnthropicError) {
-      console.error(`Anthropic API Error:`, error.message);
-    } else {
-      console.error("Unexpected Error:", error);
+    if (error instanceof Anthropic.APIError) {
+      throw new ApiError(error.status, error.message);
     }
-    return "";
+
+    throw new ApiError(500, "An unexpected error occurred during Anthropic API request")
   }
 }
