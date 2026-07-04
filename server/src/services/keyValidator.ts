@@ -1,18 +1,24 @@
 import { validateAnthropicKey } from "@/services/providers/anthropicProvider.js";
 import { validateOpenAIKey } from "@/services/providers/openaiProvider.js";
 import { Provider } from "@/types/chat.js";
+import ApiError from "@/utils/apiError.util.js";
 
 export async function validateKey(provider: Provider, apiKey: string): Promise<boolean> {
-  apiKey = apiKey.trim();
-  if (!apiKey) return false;
+  const sanitizedKey = apiKey.trim();
 
-  if (provider.toLowerCase() === "claude") {
-    return validateAnthropicKey(apiKey.trim());
+  if (!sanitizedKey) {
+    throw new ApiError(400, "API key is required");
   }
 
-  if (provider.toLowerCase() === "openai") {
-    return validateOpenAIKey(apiKey.trim());
+  const normalProvider = provider.toLowerCase();
+
+  if (normalProvider === "claude" || normalProvider === "anthropic") {
+    return validateAnthropicKey(sanitizedKey);
   }
 
-  return false;
+  if (normalProvider === "openai") {
+    return validateOpenAIKey(sanitizedKey);
+  }
+
+  throw new ApiError(400, "Unsupported provider");
 }

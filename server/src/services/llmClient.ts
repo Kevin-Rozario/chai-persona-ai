@@ -1,6 +1,7 @@
 import { createClaudeCompletion } from "@/services/providers/anthropicProvider.js";
 import { createOpenAICompletion } from "@/services/providers/openaiProvider.js";
 import { Provider, ChatMessage } from "@/types/chat.js";
+import ApiError from "@/utils/apiError.util.js";
 
 export async function createCompletion(
   provider: Provider,
@@ -8,13 +9,15 @@ export async function createCompletion(
   systemPrompt: string,
   messages: ChatMessage[]
 ) {
-  if (provider.toLowerCase() === "claude") {
-    return createClaudeCompletion(apiKey, systemPrompt, messages);
+  const normalProvider = provider.toLowerCase();
+
+  if (normalProvider === "claude" || normalProvider === "anthropic") {
+    return await createClaudeCompletion(apiKey, systemPrompt, messages);
   }
 
-  if (provider.toLowerCase() === "openai") {
-    return createOpenAICompletion(apiKey, systemPrompt, messages);
+  if (normalProvider === "openai") {
+    return await createOpenAICompletion(apiKey, systemPrompt, messages);
   }
 
-  throw new Error(`Unsupported provider: ${provider}`);
+  throw new ApiError(400, "Unsupported provider");
 }

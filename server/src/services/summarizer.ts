@@ -13,6 +13,10 @@ export async function summarizeConversation(
   previousSummary: string | undefined,
   newMessages: ChatMessage[]
 ): Promise<string> {
+  if (!newMessages || newMessages.length === 0) {
+    return previousSummary?.trim() || "";
+  }
+
   const transcript = newMessages.map((m) => `${m.role}: ${m.text}`).join("\n");
 
   const userPrompt = previousSummary
