@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { createCompletion } from "@/services/llmClient.js";
+import { streamCompletion } from "@/services/llmClient.js";
 import { summarizeConversation } from "@/services/summarizer.js";
 import { matchContent } from "@/services/contentMatcher.js";
 import { getPersonaPrompt, getPersonaCatalog } from "@/personas/index.js";
 import { asyncHandler } from "@/utils/asyncHandler.util.js";
+import { initSSE, writeSSEEvent, endSSE } from "@/services/streamHandler.js";
 import ApiError from "@/utils/apiError.util.js";
-import ApiResponse from "@/utils/apiResponse.util.js";
-import type { ChatRequest, ChatResponse, ReferenceItem } from "@/types/chat.js";
+import type { ChatRequest, ReferenceItem } from "@/types/chat.js";
 
 const router = Router();
 
@@ -41,20 +41,34 @@ router.post(
       systemPrompt += formatReferencesBlock(matched);
     }
 
-    const reply = await createCompletion(provider, apiKey, systemPrompt, messages);
+    initSSE(res);
 
-    let updatedSummary: string | undefined;
-    if (pending && pending.length > 0) {
-      updatedSummary = await summarizeConversation(provider, apiKey, summary, pending);
+    try {
+      for await (const token of streamCompletion(provider, apiKey, systemPrompt, messages)) {
+        writeSSEEvent(res, "token", { value: token });
+      }
+
+      if (matched.length > 0) {
+        writeSSEEvent(res, "references", { value: matched });
+      }
+
+      if (pending && pending.length > 0) {
+        try {
+          const updatedSummary = await summarizeConversation(provider, apiKey, summary, pending);
+          writeSSEEvent(res, "summary", { value: updatedSummary });
+        } catch (summaryErr) {
+          console.error("Summarization failed, continuing without it:", summaryErr);
+        }
+      }
+
+      writeSSEEvent(res, "done", {});
+    } catch (error) {
+      const message =
+        error instanceof ApiError ? error.message : "Streaming failed. Please try again.";
+      writeSSEEvent(res, "error", { message });
+    } finally {
+      endSSE(res);
     }
-
-    const response: ChatResponse & { references?: ReferenceItem[] } = {
-      reply,
-      ...(updatedSummary && { summary: updatedSummary }),
-      ...(matched.length > 0 && { references: matched }),
-    };
-
-    res.status(200).json(new ApiResponse(200, "Chat completion completed successfully", response));
   })
 );
 
