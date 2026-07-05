@@ -1,6 +1,6 @@
 # ChaiPersona AI - Documentation
 
-This document covers how each persona was built, how conversations stay coherent over time, and how the system stays grounded in real content instead of hallucinating. It corresponds to the "Documentation" requirement of the assignment, separate from the setup-focused [README.md](./README.md).
+This document covers how each persona was built, how conversations stay coherent over time, and how the system stays grounded in real content instead of hallucinating.
 
 ## Table of Contents
 
@@ -28,10 +28,10 @@ Both personas are built entirely from **publicly available material**. No privat
 
 ## What was extracted, per persona
 
-- **Recurring phrases and verbal patterns** — e.g. Hitesh's "Haanji," "toh dekho," "aur kya chahiye"; Piyush's "Here's the thing," "Honestly?," "Let's be real"
-- **Register differences across platforms** — both personas speak differently on YouTube (teaching mode, more structured) versus X (terser, wittier, more casual). The system prompts primarily reflect the teaching-mode register, since that matches the context of an educational chat product, while still carrying over some of the sharper personality visible on social media.
-- **Teaching philosophy** — recurring themes each person emphasizes (Hitesh: fundamentals before frameworks; Piyush: implementation over theory, production-thinking)
-- **Real content inventory** — actual video series, courses, and social handles across YouTube, Udemy, cohort platforms, and personal websites, compiled into a structured, verifiable catalog.
+- **Recurring phrases and verbal patterns** - e.g. Hitesh's "Haanji," "toh dekho," "aur kya chahiye"; Piyush's "Here's the thing," "Honestly?," "Let's be real"
+- **Register differences across platforms** - both personas speak differently on YouTube (teaching mode, more structured) versus X (terser, wittier, more casual). The system prompts primarily reflect the teaching-mode register, since that matches the context of an educational chat product, while still carrying over some of the sharper personality visible on social media.
+- **Teaching philosophy** - recurring themes each person emphasizes (Hitesh: fundamentals before frameworks; Piyush: implementation over theory, production-thinking)
+- **Real content inventory** - actual video series, courses, and social handles across YouTube, Udemy, cohort platforms, and personal websites, compiled into a structured, verifiable catalog.
 
 ## What was deliberately excluded
 
@@ -77,20 +77,20 @@ Persona: [Name] (AI Persona)
 
 | Technique                      | Used?     | Reasoning                                                                                                                                      |
 | ------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Zero-shot / direct instruction | Partially | Used for identity, philosophy, and rules — insufficient alone for voice accuracy                                                               |
-| **Role-play prompting**        | **Yes**   | Core mechanism — persona identity and background are framed as "you are X"                                                                     |
-| **Few-shot prompting**         | **Yes**   | The single largest lever for accuracy — concrete example exchanges anchor tone and length far more reliably than adjectives describing a style |
-| Chain-of-thought               | No        | Deliberately excluded — this product needs fast, natural chat replies, not visible step-by-step reasoning                                      |
+| Zero-shot / direct instruction | Partially | Used for identity, philosophy, and rules - insufficient alone for voice accuracy                                                               |
+| **Role-play prompting**        | **Yes**   | Core mechanism - persona identity and background are framed as "you are X"                                                                     |
+| **Few-shot prompting**         | **Yes**   | The single largest lever for accuracy - concrete example exchanges anchor tone and length far more reliably than adjectives describing a style |
+| Chain-of-thought               | No        | Deliberately excluded - this product needs fast, natural chat replies, not visible step-by-step reasoning                                      |
 
 The combination of **role-play + few-shot** was chosen deliberately. Role-play alone tends to produce a generically "helpful AI with an accent." Few-shot examples anchor the model to a specific rhythm, length, and vocabulary that is far harder to drift away from over a long conversation.
 
 ## Prompt structure
 
-Each persona's system prompt follows a consistent layered format, written in **Markdown** rather than XML tags — chosen for LLM provider portability, since Markdown structure is equally well understood by both Claude and GPT models, whereas XML-tag conventions are a more Claude-specific idiom. This matters because the app is BYOK and must perform equally well regardless of which provider the user connects.
+Each persona's system prompt follows a consistent layered format, written in **Markdown** rather than XML tags chosen for LLM provider portability, since Markdown structure is equally well understood by both Claude and GPT models, whereas XML-tag conventions are a more Claude-specific idiom. This matters because the app is BYOK and must perform equally well regardless of which provider the user connects.
 
 ## Response length constraint
 
-An early version of both prompts produced long, multi-paragraph replies — technically correct, but nothing like how either person talks in a live chat context. The fix was an **explicit, repeated length constraint**: default to 1–3 sentences, like a real text message, paired with few-shot examples demonstrating that exact length.
+An early version of both prompts produced long, multi-paragraph replies technically correct, but nothing like how either person talks in a live chat context. The fix was an **explicit, repeated length constraint**: default to 1–3 sentences, like a real text message, paired with few-shot examples demonstrating that exact length.
 
 ## Prompt injection resistance
 
@@ -104,7 +104,7 @@ Each system prompt includes a dedicated, non-negotiable security section that:
 
 ## The problem
 
-LLMs have no memory between API calls — every turn requires resending relevant history. Sending the entire conversation on every turn is simple but does not scale.
+LLMs have no memory between API calls every turn requires resending relevant history. Sending the entire conversation on every turn is simple but does not scale.
 
 ## The approach: sliding window + rolling summary
 
@@ -120,7 +120,7 @@ LLMs have no memory between API calls — every turn requires resending relevant
 - Easier to explain.
 - Good enough for the project scale.
 
-# 5. Content Matching — Grounded References, No Hallucination
+# 5. Content Matching - Grounded References, No Hallucination
 
 ## How it works
 

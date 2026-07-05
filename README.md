@@ -1,10 +1,9 @@
-# ChaiPersona AI
+# <div align="center"><span style="color: #ff6900">Chai</span>Persona AI</div>
 
 An AI-powered chat experience that simulates conversations with two Indian coding educators **Hitesh Choudhary** and **Piyush Garg** built for the GenAI with JS 2026 assignment.
 
 Switch between personas mid-conversation, get responses grounded in each mentor's real teaching style, and receive genuine content recommendations pulled from their actual YouTube series, courses, and cohorts.
 
-**Live Website:** <https://persona.kevinrozario.com>  
 **Detailed Methodology:** See [DOCUMENTATION](./DOCUMENTATION.md)
 
 ![Dark Mode Screenshot](.github/assets/chaipersona-dark.png)
@@ -173,8 +172,6 @@ Confirm it's running:
 
 ```bash
 curl http://localhost:5000
-
-# {"success":true,"statusCode":200,"message":"Server is running","data":{},"timestamp":"2026-07-05T17:33:37.652Z"}
 ```
 
 ## 3. Set up the client
