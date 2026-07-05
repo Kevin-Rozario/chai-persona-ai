@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { env } from "@/config/env.js";
 import { streamCompletion } from "@/services/llmClient.js";
 import { summarizeConversation } from "@/services/summarizer.js";
 import { matchContent } from "@/services/contentMatcher.js";
@@ -21,7 +22,16 @@ function formatReferencesBlock(references: ReferenceItem[]): string {
 router.post(
   "/chat",
   asyncHandler(async (req, res) => {
-    const { personaId, provider, apiKey, messages, pending, summary } = req.body as ChatRequest;
+    const {
+      personaId,
+      provider,
+      apiKey: clientKey,
+      messages,
+      pending,
+      summary,
+    } = req.body as ChatRequest;
+    const apiKey =
+      clientKey || (provider === "openai" ? env.DEV_OPENAI_API_KEY : env.DEV_ANTHROPIC_API_KEY);
 
     if (!personaId || !provider || !apiKey || !messages?.length) {
       throw new ApiError(400, "Missing personaId, provider, key or messages");

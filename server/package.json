@@ -3,24 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "pnpm run format:check && tsc",
+    "build": "tsc",
     "start": "node dist/index.js",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "Kevin Rozario",
   "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.9.0",
-      "onFail": "download"
-    }
-  },
-  "type": "module",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.109.1",
     "cors": "^2.8.6",

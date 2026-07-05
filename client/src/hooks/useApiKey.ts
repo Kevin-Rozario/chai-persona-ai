@@ -25,7 +25,7 @@ async function validateKeyRequest(provider: Provider, apiKey: string): Promise<b
 }
 
 export function useApiKey() {
-  const [provider, setProvider] = useState<Provider>("claude");
+  const [provider, setProvider] = useState<Provider>("openai");
   const [apiKey, setApiKey] = useState("");
   const [status, setStatus] = useState<ConnectionStatus>("idle");
 

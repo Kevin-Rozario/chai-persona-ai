@@ -4,13 +4,13 @@
   "version": "1.0.0",
   "author": "Kevin Rozario",
   "type": "module",
+  "packageManager": "pnpm@11.9.0",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm run format:check && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,json}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,json}\""
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,json}\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",

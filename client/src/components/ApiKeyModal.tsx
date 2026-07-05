@@ -64,16 +64,16 @@ function ApiKeyModal({
           <>
             <div className="mb-4 flex gap-2">
               <button
-                className={`provider-tab ${selectedProvider === "claude" ? "provider-tab-active" : ""}`}
-                onClick={() => setSelectedProvider("claude")}
-              >
-                Claude
-              </button>
-              <button
                 className={`provider-tab ${selectedProvider === "openai" ? "provider-tab-active" : ""}`}
                 onClick={() => setSelectedProvider("openai")}
               >
                 OpenAI
+              </button>
+              <button
+                className={`provider-tab ${selectedProvider === "claude" ? "provider-tab-active" : ""}`}
+                onClick={() => setSelectedProvider("claude")}
+              >
+                Claude
               </button>
             </div>
 
