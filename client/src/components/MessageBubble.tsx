@@ -31,7 +31,7 @@ function MessageBubble({ message, persona }: MessageBubbleProps) {
         >
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
           {message.isStreaming && (
-            <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-current align-middle" />
+            <span className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-current align-middle" />
           )}
         </div>
         <div className="flex w-full flex-wrap items-center justify-evenly">

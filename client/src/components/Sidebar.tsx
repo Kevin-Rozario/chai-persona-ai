@@ -33,7 +33,9 @@ function Sidebar({
       className={`sidebar ${mobileOpen ? "flex" : "hidden"} absolute z-30 h-full md:relative md:flex`}
     >
       <div className="flex items-center justify-between px-5 pt-5 pb-4">
-        <span className="text-base font-semibold">Persona AI</span>
+        <span className="text-lg font-semibold">
+          <span className="font-semibold text-orange-500">Chai</span>Persona AI
+        </span>
         <div className="flex items-center gap-1">
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
           <button className="icon-btn md:hidden" onClick={onCloseMobile}>

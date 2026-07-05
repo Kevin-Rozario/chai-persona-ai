@@ -53,7 +53,7 @@ function ApiKeyModal({
           <>
             <p className="text-accent mb-4 flex items-center gap-1.5 text-xs">
               <CheckCircle2 size={13} />
-              Connected to {provider === "claude" ? "Claude" : "OpenAI"} — key stored for this
+              Connected to {provider === "claude" ? "Claude" : "OpenAI"} - key stored for this
               session only.
             </p>
             <button onClick={onDisconnect} className="btn-accent">
@@ -114,7 +114,7 @@ function ApiKeyModal({
         )}
 
         <p className="text-muted mt-3 text-[11px] leading-relaxed">
-          Your key is only used to validate the connection and is kept in this browser session —
+          Your key is only used to validate the connection and is kept in this browser session -
           never stored on our servers.
         </p>
       </div>

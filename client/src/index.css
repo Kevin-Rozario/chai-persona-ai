@@ -21,7 +21,7 @@
   --border: #e8e1d4;
   --ink: #191410;
   --muted: #797063;
-  --accent: oklch(75% 0.183 55.934);
+  --accent: #ff6900;
 }
 
 /* Dark Theme Tokens */
@@ -32,7 +32,7 @@
   --border: #2b2319;
   --ink: #f5efe6;
   --muted: #9c9086;
-  --accent: oklch(75% 0.183 55.934);
+  --accent: #ff6900;
 }
 
 @layer base {
@@ -93,7 +93,7 @@
   @apply bg-surface h-10 w-10 shrink-0 rounded-full object-cover;
 }
 @utility avatar-sm {
-  @apply bg-surface h-7 w-7 shrink-0 rounded-full object-cover;
+  @apply bg-surface h-8 w-8 shrink-0 rounded-full object-cover;
 }
 @utility icon-btn {
   @apply hover:bg-surface text-muted rounded-lg p-1.5 transition-colors;
@@ -110,7 +110,7 @@
   @apply max-w-[75%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed;
 }
 @utility bubble-user {
-  @apply bg-accent text-bg;
+  @apply bg-accent text-ink;
 }
 @utility bubble-assistant {
   @apply border-border bg-surface text-ink border;
@@ -136,11 +136,11 @@
   @apply border-border flex-1 rounded-lg border py-2 text-sm transition-colors;
 }
 @utility provider-tab-active {
-  @apply bg-accent text-bg border-accent;
+  @apply bg-accent border-accent text-white;
 }
 @utility field-input {
   @apply border-border bg-surface focus:border-accent w-full rounded-lg border px-3 py-2 text-sm transition-colors outline-none;
 }
 @utility btn-accent {
-  @apply bg-accent text-bg flex w-full items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-opacity disabled:opacity-40;
+  @apply bg-accent flex w-full items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium text-white transition-opacity disabled:opacity-40;
 }
