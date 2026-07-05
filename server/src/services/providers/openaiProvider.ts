@@ -48,3 +48,34 @@ export async function createOpenAICompletion(
     throw new ApiError(500, "An unexpected error occurred during OpenAI API request");
   }
 }
+
+export async function* streamOpenAICompletion(
+  apiKey: string,
+  systemPrompt: string,
+  messages: ChatMessage[]
+): AsyncGenerator<string> {
+  const client = new OpenAI({ apiKey });
+
+  try {
+    const stream = await client.chat.completions.create({
+      model: CHAT_MODEL,
+      max_tokens: 1024,
+      stream: true,
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...messages.map((m) => ({ role: m.role, content: m.text }) as const),
+      ],
+    });
+
+    for await (const chunk of stream) {
+      const token = chunk.choices[0]?.delta?.content;
+      if (token) yield token;
+    }
+  } catch (error) {
+    if (error instanceof OpenAI.APIError) {
+      throw new ApiError(error.status, error.message);
+    }
+
+    throw new ApiError(500, "An unexpected error occurred during OpenAI streaming request");
+  }
+}

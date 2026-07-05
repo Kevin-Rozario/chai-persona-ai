@@ -53,3 +53,32 @@ export async function createClaudeCompletion(
     throw new ApiError(500, "An unexpected error occurred during Anthropic API request");
   }
 }
+
+export async function* streamClaudeCompletion(
+  apiKey: string,
+  systemPrompt: string,
+  messages: ChatMessage[]
+): AsyncGenerator<string> {
+  const client = new Anthropic({ apiKey });
+
+  try {
+    const stream = client.messages.stream({
+      model: CHAT_MODEL,
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: messages.map((m) => ({ role: m.role as "user" | "assistant", content: m.text })),
+    });
+
+    for await (const event of stream) {
+      if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+        yield event.delta.text;
+      }
+    }
+  } catch (error) {
+    if (error instanceof Anthropic.APIError) {
+      throw new ApiError(error.status, error.message);
+    }
+
+    throw new ApiError(500, "An unexpected error occurred during Anthropic streaming request");
+  }
+}
