@@ -26,6 +26,7 @@ export interface Persona {
   name: string;
   handle: string;
   avatarUrl: string;
+  accent: string;
   greeting: string;
   sub: string;
   suggestions: string[];

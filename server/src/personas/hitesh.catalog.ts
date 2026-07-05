@@ -149,7 +149,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     title: "ChaiCode Courses",
     platform: "website",
     type: "course",
-    url: "https://courses.chaicode.com",
+    url: "https://courses.chaicode.com/learn",
     topics: ["structured courses", "full stack", "self-paced learning"],
     free: false,
   },

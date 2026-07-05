@@ -6,6 +6,7 @@ import {
   getPendingSummaryMessages,
   shouldSummarize,
 } from "@/utils/contextWindow";
+import { streamChat } from "@/hooks/useSSEStream";
 
 function createEmptyThreads(): Record<PersonaId, Message[]> {
   return { hitesh: [], piyush: [] };
@@ -60,46 +61,57 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
       const pending = pendingRaw.map((m) => ({ role: m.role, text: m.text }));
       const summary = summariesRef.current[targetId];
 
-      try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            personaId: targetId,
-            provider,
-            apiKey,
-            messages: windowed,
-            ...(shouldSummarize(pendingRaw) && { pending }),
-            ...(summary && { summary }),
-          }),
-        });
+      const assistantId = crypto.randomUUID();
+      let hasStartedReply = false;
 
-        const payload = await res.json();
-
-        if (!res.ok || !payload.success) {
-          throw new Error(payload?.error?.message || "Failed to reach server.");
-        }
-
-        const apiData = payload.data;
-
-        if (apiData.summary) {
-          summariesRef.current[targetId] = apiData.summary;
-          summarizedUpToRef.current[targetId] = currentActiveThread.length - windowed.length;
-        }
-
-        const assistantMessage: Message = {
-          id: crypto.randomUUID(),
+      const appendPlaceholder = () => {
+        const placeholder: Message = {
+          id: assistantId,
           role: "assistant",
-          text: apiData.reply,
+          text: "",
           timestamp: Date.now(),
           personaId: targetId,
-          ...(apiData.references?.length > 0 && { references: apiData.references }),
+          isStreaming: true,
         };
+        setThreads((prev) => ({ ...prev, [targetId]: [...prev[targetId], placeholder] }));
+      };
 
-        setThreads((prev) => ({ ...prev, [targetId]: [...prev[targetId], assistantMessage] }));
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Something went wrong. Please try again.";
+      const appendToken = (value: string) => {
+        if (!hasStartedReply) {
+          hasStartedReply = true;
+          appendPlaceholder();
+        }
+        setThreads((prev) => ({
+          ...prev,
+          [targetId]: prev[targetId].map((m) =>
+            m.id === assistantId ? { ...m, text: m.text + value } : m,
+          ),
+        }));
+      };
+
+      const attachReferences = (refs: Message["references"]) => {
+        setThreads((prev) => ({
+          ...prev,
+          [targetId]: prev[targetId].map((m) =>
+            m.id === assistantId ? { ...m, references: refs } : m,
+          ),
+        }));
+      };
+
+      const finalizeReply = () => {
+        setThreads((prev) => ({
+          ...prev,
+          [targetId]: prev[targetId].map((m) =>
+            m.id === assistantId ? { ...m, isStreaming: false } : m,
+          ),
+        }));
+      };
+
+      const showError = (message: string) => {
+        if (hasStartedReply) {
+          finalizeReply();
+          return;
+        }
         const fallback: Message = {
           id: crypto.randomUUID(),
           role: "assistant",
@@ -108,6 +120,32 @@ export function useChat({ provider, apiKey }: UseChatOptions) {
           personaId: targetId,
         };
         setThreads((prev) => ({ ...prev, [targetId]: [...prev[targetId], fallback] }));
+      };
+
+      try {
+        await streamChat(
+          `${import.meta.env.VITE_BACKEND_API_URL}/chat`,
+          {
+            personaId: targetId,
+            provider,
+            apiKey,
+            messages: windowed,
+            ...(shouldSummarize(pendingRaw) && { pending }),
+            ...(summary && { summary }),
+          },
+          {
+            onToken: appendToken,
+            onReferences: attachReferences,
+            onSummary: (value) => {
+              summariesRef.current[targetId] = value;
+              summarizedUpToRef.current[targetId] = currentActiveThread.length - windowed.length;
+            },
+            onDone: finalizeReply,
+            onError: showError,
+          },
+        );
+      } catch {
+        showError("Something went wrong. Please try again.");
       } finally {
         setIsTyping(false);
       }

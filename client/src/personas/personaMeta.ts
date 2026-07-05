@@ -5,10 +5,10 @@ export const PERSONAS: Record<"hitesh" | "piyush", Persona> = {
     id: "hitesh",
     name: "Hitesh Choudhary",
     handle: "Chai aur Code",
-    avatarUrl:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=hitesh-choudhary&backgroundColor=fde9d9",
-    greeting: "Haan ji! Batao aaj kya seekhna hai — code, career, ya bas chai pe charcha?",
-    sub: "Full stack mentor · Hinglish teaching style",
+    avatarUrl: "https://avatars.githubusercontent.com/u/11613311?v=4",
+    accent: "#C2703D",
+    greeting: "Haanji! Batao kya seekhna hai — code, career, ya bas chai pe charcha?",
+    sub: "Chai aur Code · full stack mentor",
     suggestions: [
       "React seekhna chahiye ya Next.js se start karu?",
       "Job ke liye DSA kitna zaroori hai?",
@@ -18,15 +18,16 @@ export const PERSONAS: Record<"hitesh" | "piyush", Persona> = {
   piyush: {
     id: "piyush",
     name: "Piyush Garg",
-    handle: "Building in public",
+    handle: "Teachyst · Software Engineer",
     avatarUrl:
-      "https://api.dicebear.com/9.x/notionists/svg?seed=piyush-garg&backgroundColor=dbe4fe",
-    greeting: "Hey, Piyush here. What are you building — and will it actually scale?",
-    sub: "Software engineer · System design focus",
+      "https://media.licdn.com/dms/image/v2/D5603AQF2sJ8jxYz7aQ/profile-displayphoto-scale_400_400/B56Z6xDO6rJ4Ag-/0/1781086879183?e=1784764800&v=beta&t=EKGw0oYON2YWsGTg7p6LWR9hG-BOpgBeoCMilO_kGRw",
+    accent: "#4F6FDE",
+    greeting: "Hey, Piyush here. What are you building — and will it scale?",
+    sub: "Full stack + system design, no fluff",
     suggestions: [
       "How do I structure a scalable Node.js backend?",
       "Is system design worth it as a fresher?",
-      "What's your actual stack for shipping fast?",
+      "MongoDB or Postgres for my project?",
     ],
   },
 };

@@ -11,13 +11,13 @@ function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
     <button
       onClick={() => onSelect(persona.id)}
       className={`sidebar-item ${active ? "sidebar-item-active" : ""}`}
-      style={{ borderLeft: `3px solid ${active ? `var(--accent)` : "transparent"}` }}
+      style={{ borderLeft: `3px solid ${active ? `${persona.accent}` : "transparent"}` }}
     >
       <img
         src={persona.avatarUrl}
         alt={persona.name}
         className="avatar"
-        style={active ? { boxShadow: `0 0 0 2px ${`var(--accent)`}55` } : undefined}
+        style={active ? { boxShadow: `0 0 0 2px ${persona.accent}55` } : undefined}
       />
       <div className="min-w-0 text-left">
         <div className="truncate text-sm font-medium">{persona.name}</div>
