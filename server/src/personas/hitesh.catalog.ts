@@ -1,20 +1,20 @@
-import type { ReferenceItem } from "../types/chat.js";
+import type { ReferenceItem } from "@/types/chat.js";
 
 export const HITESH_CATALOG: ReferenceItem[] = [
   {
-    title: "Chai aur Springboot",
+    title: "Chai aur Springboot - Java Backend Series",
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLAtsKd9vhf5M",
-    topics: ["springboot", "java", "backend", "microservices", "production"],
+    topics: ["spring boot", "java", "backend", "microservices", "production"],
     free: true,
   },
   {
-    title: "Chai aur DSA (Hindi)",
+    title: "Chai aur DSA - Data Structures & Algorithms (Hindi)",
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoAMcPw8uJXxjeLwYQV8MkpQ",
-    topics: ["dsa", "data structures", "algorithms", "hindi"],
+    topics: ["dsa", "data structures", "algorithms", "interview prep", "hindi"],
     free: true,
   },
   {
@@ -22,15 +22,15 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoBLai4myIIkzhZFL4SiL9EA",
-    topics: ["mobile", "android", "ios", "react native", "flutter"],
+    topics: ["mobile development", "android", "ios", "react native", "flutter"],
     free: true,
   },
   {
-    title: "Chai aur Typescript",
+    title: "Chai aur TypeScript",
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoBkkr8lblqtsJvxrw3j1tWC",
-    topics: ["typescript", "ts", "javascript", "js", "frontend", "backend"],
+    topics: ["typescript", "javascript", "type safety", "frontend", "backend"],
     free: true,
   },
   {
@@ -38,7 +38,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoCPfgKZS8UE0MDuwiKvL8zi",
-    topics: ["c++", "cpp", "programming", "backend", "data structures"],
+    topics: ["c++", "competitive programming", "data structures", "algorithms"],
     free: true,
   },
   {
@@ -50,11 +50,11 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     free: true,
   },
   {
-    title: "Chai aur NextJS",
+    title: "Chai aur Next.js",
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoBAaWGtn9GA2PTw0HO0tXzq",
-    topics: ["nextjs", "react", "frontend", "server-side rendering"],
+    topics: ["nextjs", "react", "server-side rendering", "frontend"],
     free: true,
   },
   {
@@ -62,15 +62,15 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoBsMugTFALhdLlZ5VOqCg2s",
-    topics: ["python", "programming", "backend", "web development"],
+    topics: ["python", "scripting", "backend", "automation"],
     free: true,
   },
   {
-    title: "Chai aur Backend",
+    title: "Chai aur Backend - Node.js, Express & MongoDB",
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoBGh_8p_NS-ZAh6v7HhYqHW",
-    topics: ["backend", "nodejs", "express", "mongodb", "rest api", "auth"],
+    topics: ["backend", "nodejs", "express", "mongodb", "rest api", "authentication"],
     free: true,
   },
   {
@@ -86,7 +86,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2y-tRC5Q37",
-    topics: ["javascript", "js", "frontend", "backend"],
+    topics: ["javascript", "js fundamentals", "frontend", "backend"],
     free: true,
   },
   {
@@ -94,11 +94,11 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLu71SKxNbfoDBNF5s-WH6aLbthSEIMhMI",
-    topics: ["html", "web development", "frontend"],
+    topics: ["html", "web fundamentals", "frontend", "beginner"],
     free: true,
   },
   {
-    title: "Hitesh Choudhary (English Channel)",
+    title: "Hitesh Choudhary - English Channel (MERN & JavaScript)",
     platform: "youtube",
     type: "handle",
     url: "https://www.youtube.com/@HiteshCodeLab",
@@ -110,7 +110,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "playlist",
     url: "https://www.youtube.com/playlist?list=PLRAV69dS1uWSNLlI_I2xSDdghk3Y0zGml",
-    topics: ["production", "deployment", "cloud"],
+    topics: ["production", "deployment", "devops", "cloud", "servers"],
     free: true,
   },
   {
@@ -118,7 +118,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "playlist",
     url: "https://www.youtube.com/playlist?list=PLRAV69dS1uWT4v4iK1h6qejyhGObFH9_o",
-    topics: ["git", "version control", "development"],
+    topics: ["git", "github", "version control", "collaboration"],
     free: true,
   },
   {
@@ -126,15 +126,15 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "youtube",
     type: "series",
     url: "https://www.youtube.com/playlist?list=PLRAV69dS1uWSjBBJ-egNNOd4mdblt1P4c",
-    topics: ["react native", "mobile", "frontend"],
+    topics: ["react native", "mobile development", "frontend", "cross-platform"],
     free: true,
   },
   {
-    title: "ChaiCode",
+    title: "ChaiCode - Products & Reviews",
     platform: "website",
     type: "post",
     url: "https://chaicode.com",
-    topics: ["cohorts", "udemy", "products", "reviews"],
+    topics: ["chaicode", "products", "reviews", "student outcomes"],
     free: true,
   },
   {
@@ -150,20 +150,19 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "website",
     type: "course",
     url: "https://courses.chaicode.com",
-    topics: [],
+    topics: ["structured courses", "full stack", "self-paced learning"],
     free: false,
   },
   {
-    title: "Chai aur Docs (Companion Documentation)",
+    title: "Chai aur Docs - Companion Documentation",
     platform: "website",
     type: "post",
     url: "https://docs.chaicode.com",
-    topics: ["documentation", "reference notes", "devops", "backend"],
+    topics: ["documentation", "reference notes", "devops", "backend", "git"],
     free: true,
   },
-
   {
-    title: "Courses on Udemy",
+    title: "Hitesh Choudhary - Courses on Udemy",
     platform: "udemy",
     type: "course",
     url: "https://www.udemy.com/user/hitesh-choudharycom/",
@@ -171,7 +170,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     free: false,
   },
   {
-    title: "Hitesh Choudhary Portfolio Website",
+    title: "Hitesh Choudhary - Personal Website",
     platform: "website",
     type: "post",
     url: "https://hiteshchoudhary.com",
@@ -179,11 +178,11 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     free: true,
   },
   {
-    title: "Chai aur Code (Hinglish Channel)",
+    title: "Chai aur Code - Hinglish Channel",
     platform: "youtube",
     type: "handle",
     url: "https://www.youtube.com/@chaiaurcode",
-    topics: ["quick concepts", "tips", "career", "short videos"],
+    topics: ["quick concepts", "tips", "career advice", "short videos"],
     free: true,
   },
   {
@@ -191,7 +190,7 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "social",
     type: "handle",
     url: "https://www.instagram.com/hiteshchoudharyofficial/",
-    topics: [],
+    topics: ["behind the scenes", "personal updates", "reels"],
     free: true,
   },
   {
@@ -199,15 +198,15 @@ export const HITESH_CATALOG: ReferenceItem[] = [
     platform: "social",
     type: "handle",
     url: "https://www.linkedin.com/in/hiteshchoudhary/",
-    topics: [],
+    topics: ["professional updates", "career", "networking"],
     free: true,
   },
   {
-    title: "Hitesh Choudhary on Github",
+    title: "Hitesh Choudhary on GitHub",
     platform: "social",
     type: "handle",
     url: "https://github.com/hiteshchoudhary",
-    topics: [],
+    topics: ["open source", "repositories", "code samples"],
     free: true,
   },
   {
