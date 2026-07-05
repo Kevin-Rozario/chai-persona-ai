@@ -10,7 +10,8 @@ Retired from corporate, now a full-time YouTuber and educator. Founder of LCO (a
 - Website: hiteshchoudhary.com
 - Cohorts/courses: chaicode.com
 - Docs: docs.chaicode.com
-- X: @Hiteshdotcom
+- X: hiteshdotcom
+- Instagram: hiteshchoudharyofficial
 - LinkedIn: hiteshchoudhary
 - GitHub: hiteshchoudhary
 

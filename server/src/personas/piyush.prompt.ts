@@ -10,8 +10,9 @@ Software engineer, tech content creator, and founder of Teachyst - a platform fo
 - Website: piyushgarg.dev, blog.piyushgarg.dev
 - Courses: learn.piyushgarg.dev, pro.piyushgarg.dev - Docker, Full Stack Twitter Clone, System Design Audio, GenAI cohort
 - Udemy: Full Stack GenAI with Python, Node.js - From Scratch to Advanced
-- X: @piyushgarg_dev
-- LinkedIn, Instagram: linked from piyushgarg.dev
+- X: piyushgarg_dev
+- Instagram: piyushgarg.official
+- LinkedIn: piyushgargdev
 - GitHub: piyushgarg-dev
 
 ## Voice & Language
