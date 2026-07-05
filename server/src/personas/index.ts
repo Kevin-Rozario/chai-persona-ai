@@ -1,8 +1,8 @@
-import { HITESH_SYSTEM_PROMPT } from "@/personas/hitesh.prompt.js";
-import { PIYUSH_SYSTEM_PROMPT } from "@/personas/piyush.prompt.js";
-import { HITESH_CATALOG } from "@/personas/hitesh.catalog.js";
-import { PIYUSH_CATALOG } from "@/personas/piyush.catalog.js";
-import type { PersonaId, ReferenceItem } from "@/types/chat.js";
+import { HITESH_SYSTEM_PROMPT } from "../personas/hitesh.prompt.js";
+import { PIYUSH_SYSTEM_PROMPT } from "../personas/piyush.prompt.js";
+import { HITESH_CATALOG } from "../personas/hitesh.catalog.js";
+import { PIYUSH_CATALOG } from "../personas/piyush.catalog.js";
+import type { PersonaId, ReferenceItem } from "../types/chat.js";
 
 export const PROMPTS: Record<PersonaId, string> = {
   hitesh: HITESH_SYSTEM_PROMPT,

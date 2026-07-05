@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
-import { env } from "@/config/env.js";
-import { globalErrorHandler } from "@/middlewares/error.middleware.js";
-import chatRoute from "@/routes/chat.route.js";
-import validateKeyRoute from "@/routes/validateKey.route.js";
-import ApiResponse from "@/utils/apiResponse.util.js";
+import { env } from "./config/env.js";
+import { globalErrorHandler } from "./middlewares/error.middleware.js";
+import chatRoute from "./routes/chat.route.js";
+import validateKeyRoute from "./routes/validateKey.route.js";
+import ApiResponse from "./utils/apiResponse.util.js";
 
 const app = express();
 

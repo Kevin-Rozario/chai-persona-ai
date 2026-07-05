@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { validateKey } from "@/services/keyValidator.js";
-import { ValidateKeyRequest, ValidateKeyResponse } from "@/types/chat.js";
-import { asyncHandler } from "@/utils/asyncHandler.util.js";
-import ApiError from "@/utils/apiError.util.js";
-import ApiResponse from "@/utils/apiResponse.util.js";
+import { validateKey } from "../services/keyValidator.js";
+import { ValidateKeyRequest, ValidateKeyResponse } from "../types/chat.js";
+import { asyncHandler } from "../utils/asyncHandler.util.js";
+import ApiError from "../utils/apiError.util.js";
+import ApiResponse from "../utils/apiResponse.util.js";
 
 const router = Router();
 

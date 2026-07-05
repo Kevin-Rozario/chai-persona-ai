@@ -1,6 +1,6 @@
 import OpenAI from "openai";
-import type { ChatMessage } from "@/types/chat.js";
-import ApiError from "@/utils/apiError.util.js";
+import type { ChatMessage } from "../../types/chat.js";
+import ApiError from "../../utils/apiError.util.js";
 
 const CHAT_MODEL = "gpt-4o";
 

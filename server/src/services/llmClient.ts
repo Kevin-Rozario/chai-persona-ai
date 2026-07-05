@@ -1,13 +1,13 @@
 import {
   createClaudeCompletion,
   streamClaudeCompletion,
-} from "@/services/providers/anthropicProvider.js";
+} from "../services/providers/anthropicProvider.js";
 import {
   createOpenAICompletion,
   streamOpenAICompletion,
-} from "@/services/providers/openaiProvider.js";
-import { Provider, ChatMessage } from "@/types/chat.js";
-import ApiError from "@/utils/apiError.util.js";
+} from "../services/providers/openaiProvider.js";
+import { Provider, ChatMessage } from "../types/chat.js";
+import ApiError from "../utils/apiError.util.js";
 
 export async function createCompletion(
   provider: Provider,

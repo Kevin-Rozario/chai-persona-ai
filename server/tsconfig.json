@@ -23,10 +23,6 @@
     "declaration": false,
     "sourceMap": true,
     "removeComments": true,
-
-    "paths": {
-      "@/*": ["./src/*"],
-    },
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"],

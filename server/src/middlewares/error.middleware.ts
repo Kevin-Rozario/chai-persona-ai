@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { env } from "@/config/env.js";
-import ApiError from "@/utils/apiError.util.js";
+import { env } from "../config/env.js";
+import ApiError from "../utils/apiError.util.js";
 
 export function globalErrorHandler(err: any, _req: Request, res: Response, _next: NextFunction) {
   const isCustomError = err instanceof ApiError;

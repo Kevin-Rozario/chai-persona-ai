@@ -1,5 +1,5 @@
-import { createCompletion } from "@/services/llmClient.js";
-import type { Provider, ChatMessage } from "@/types/chat.js";
+import { createCompletion } from "../services/llmClient.js";
+import type { Provider, ChatMessage } from "../types/chat.js";
 
 const SUMMARY_SYSTEM_PROMPT = `
   You compress history into a short, factual summary.

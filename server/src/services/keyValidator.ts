@@ -1,7 +1,7 @@
-import { validateAnthropicKey } from "@/services/providers/anthropicProvider.js";
-import { validateOpenAIKey } from "@/services/providers/openaiProvider.js";
-import { Provider } from "@/types/chat.js";
-import ApiError from "@/utils/apiError.util.js";
+import { validateAnthropicKey } from "../services/providers/anthropicProvider.js";
+import { validateOpenAIKey } from "../services/providers/openaiProvider.js";
+import { Provider } from "../types/chat.js";
+import ApiError from "../utils/apiError.util.js";
 
 export async function validateKey(provider: Provider, apiKey: string): Promise<boolean> {
   const sanitizedKey = apiKey.trim();

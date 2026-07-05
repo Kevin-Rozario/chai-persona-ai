@@ -1,4 +1,4 @@
-import type { ReferenceItem } from "@/types/chat.js";
+import type { ReferenceItem } from "../types/chat.js";
 
 export const HITESH_CATALOG: ReferenceItem[] = [
   {

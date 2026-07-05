@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { env } from "@/config/env.js";
-import { streamCompletion } from "@/services/llmClient.js";
-import { summarizeConversation } from "@/services/summarizer.js";
-import { matchContent } from "@/services/contentMatcher.js";
-import { getPersonaPrompt, getPersonaCatalog } from "@/personas/index.js";
-import { asyncHandler } from "@/utils/asyncHandler.util.js";
-import { initSSE, writeSSEEvent, endSSE } from "@/services/streamHandler.js";
-import ApiError from "@/utils/apiError.util.js";
-import type { ChatRequest, ReferenceItem } from "@/types/chat.js";
+import { env } from "../config/env.js";
+import { streamCompletion } from "../services/llmClient.js";
+import { summarizeConversation } from "../services/summarizer.js";
+import { matchContent } from "../services/contentMatcher.js";
+import { getPersonaPrompt, getPersonaCatalog } from "../personas/index.js";
+import { asyncHandler } from "../utils/asyncHandler.util.js";
+import { initSSE, writeSSEEvent, endSSE } from "../services/streamHandler.js";
+import ApiError from "../utils/apiError.util.js";
+import type { ChatRequest, ReferenceItem } from "../types/chat.js";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import type { ChatMessage } from "@/types/chat.js";
-import ApiError from "@/utils/apiError.util.js";
+import type { ChatMessage } from "../../types/chat.js";
+import ApiError from "../../utils/apiError.util.js";
 
 const CHAT_MODEL = "claude-sonnet-5";
 
